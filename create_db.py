@@ -46,7 +46,6 @@ def main():
                                (id, location, current_course_id, current_course_time_left)
                                VALUES(?,?,?,?)""", (list[1], list[2], 0, 0))
 
-
     # we will now print the database:
     print("courses")
     cursor.execute("SELECT * FROM courses")
