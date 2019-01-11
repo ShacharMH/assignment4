@@ -10,7 +10,7 @@ def main():
     if not is_database_exists:  # if database does not exists - we're going to create it.
         connection_to_database = sqlite3.connect(database_name)
         with connection_to_database:  # this promises to close the connection when we're done with it
-            cursor = connection_to_database.cursor()  # this enables us to go through the database
+            cursor = connection_to_database.cursor()  # this enables us to go through the database.
             cursor.execute("""CREATE TABLE courses
                              (id INTEGER PRIMARY KEY,
                              course_name TEXT NOT NULL,
