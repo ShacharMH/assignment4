@@ -6,7 +6,6 @@ import sys
 def main():
     database_name = "schedule.db"
     is_database_exists = os.path.isfile(database_name)
-    # print('is database exists?: ', is_database_exists)
 
     if not is_database_exists:  # if database does not exists - we're going to create it.
         connection_to_database = sqlite3.connect(database_name)
@@ -52,19 +51,19 @@ def main():
         cursor.execute("SELECT * FROM courses")
         courses = cursor.fetchall()
         for course in courses:
-            print(str(course))
+            print(course)
 
         print("classrooms")
         cursor.execute("SELECT * FROM classrooms")
         classrooms = cursor.fetchall()
         for classroom in classrooms:
-            print(str(classroom))
+            print(classroom)
 
         print("students")
         cursor.execute("SELECT * FROM students")
         students = cursor.fetchall()
         for student in students:
-            print(str(student))
+            print(student)
 
         connection_to_database.commit()
 
