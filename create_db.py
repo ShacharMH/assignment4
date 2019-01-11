@@ -37,14 +37,14 @@ def main():
                 cursor.execute("""INSERT INTO courses
                                 (id, course_name, student, number_of_students, class_id, course_length)
                                 VALUES(?,?,?,?,?,?)""", (list[1], list[2], list[3], list[4], list[5], list[6]))
-            elif list[0] == "S":
+            elif list[0] == "S": # student
                 cursor.execute("""INSERT INTO students 
                                   (grade, count)
                                   VALUES(?,?)""", (list[1], list[2]))
-            else:  # list[0] == "R" classroom
+            elif list[0] == "R": # classroom
                 cursor.execute("""INSERT INTO classrooms
-                                   (id, location, current_course_id, current_course_time_left)
-                                   VALUES(?,?,?,?)""", (list[1], list[2], 0, 0))
+                                    (id, location, current_course_id, current_course_time_left)
+                                    VALUES(?,?,?,?)""", (list[1], list[2], list[3], list[4]))
 
         # we will now print the database:
         print("courses")
