@@ -17,15 +17,8 @@ def main():
                 classrooms = cursor.execute("SELECT * FROM classrooms").fetchall()
                 for classroom in classrooms:
                     current_course_time_left = update_classroom(classroom, cursor, connection_to_database, iteration)
-                    # decrease by 1 the current_course_time_left and returns it.
-                    # also: prints to screen the classroom is occupied by class
-                    # if there is no lecture in classroom, returns 0.
                     if current_course_time_left == 0:
                         release_classroom(classroom, cursor, connection_to_database, iteration)
-                        # print that the course is finished.
-                        # also: delete course from database
-                        # returns current_course_time_left and _current_course_id to 0.
-                        # if there is no class to release, function just returns.
                         assign_course(classroom, cursor, connection_to_database, iteration)
 
                 all_courses_are_done = cursor.execute("SELECT * FROM courses").fetchone() is None
@@ -48,7 +41,6 @@ def assign_course(classroom, cursor, connection_to_database, iteration):
 
     if chosen_course != 0:
         cursor.execute("UPDATE classrooms SET current_course_id = (?) WHERE id = (?)", (chosen_course[0], classroom_id))
-        connection_to_database.commit()
         cursor.execute("UPDATE classrooms SET current_course_time_left=(?) WHERE id=(?)", (chosen_course[5], classroom_id))
         connection_to_database.commit()
 
@@ -61,7 +53,7 @@ def assign_course(classroom, cursor, connection_to_database, iteration):
 
 def update_classroom(classroom, cursor, connection_to_database, iteration):
     """decrease by 1 the current_course_time_left and returns it.
-                    also: prints to screen the classroom is occupied by class.
+                    also: prints to screen that classroom is occupied by class.
                     if there is no lecture in classroom, returns 0."""
     new_cctl = 0
     if classroom[2] != 0 and iteration != 0:
@@ -70,7 +62,6 @@ def update_classroom(classroom, cursor, connection_to_database, iteration):
         connection_to_database.commit()
 
         course_name = cursor.execute("SELECT course_name FROM courses WHERE id =(?)", (classroom[2],)).fetchone()
-        # print('course name: ', course_name[0])
 
         if new_cctl != 0:
             print('(', iteration, ') ', classroom[1], ': occupied by ', course_name[0], sep='')
@@ -80,7 +71,7 @@ def update_classroom(classroom, cursor, connection_to_database, iteration):
 
 def release_classroom(classroom, cursor, connection_to_database, iteration):
     """print that the course is finished.
-                            also: delete course from database and returns current_course_time_left
+                            also: delete course from database and sets current_course_time_left
                             and current_course_id to 0.
                             if there is no class to release, function just returns."""
     if classroom[2] != 0:
@@ -90,9 +81,7 @@ def release_classroom(classroom, cursor, connection_to_database, iteration):
         print('(', iteration, ') ', classroom[1], ': ', course_name[0], ' is done', sep='')
 
         cursor.execute("DELETE FROM courses WHERE id =(?)", (classroom[2],))
-        connection_to_database.commit()
         cursor.execute("UPDATE classrooms SET current_course_id =(?) WHERE id = (?)", (0, classroom_id))
-        connection_to_database.commit()
         cursor.execute("UPDATE classrooms SET current_course_time_left = (?) WHERE id = (?)", (0, classroom_id))
         connection_to_database.commit()
 
